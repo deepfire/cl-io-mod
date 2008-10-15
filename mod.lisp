@@ -62,9 +62,8 @@
                                                      (* 2 (iter (for i below +sample-table-size+) 
                                                                 (sum (path-value *self* 'samples i 'length))))))))
 
-(let ((test-file-name "/mnt/etherstorm/audio/modules_orig/starcon2/pkunk.mod"))
-  (format t "testing ~S:~%~S~%"
-          test-file-name
-          (with-open-file (str test-file-name :element-type '(unsigned-byte 8))
-            (let ((seq (captured-stream:make-captured-stream str :allocate-full t)))
-              (parse 'mod-mk seq :big-endian)))))
+;; (let ((test-file-name "/mnt/core/audio/modules_orig/starcon2/pkunk.mod"))
+;;   (format t "testing ~S:~%~S~%"
+;;           test-file-name
+;;           (let ((seq (pergamum:file-as-vector test-file-name)))
+;;             (parse 'mod-mk seq :endianness :big-endian))))
