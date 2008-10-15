@@ -36,7 +36,7 @@
 
 (defbintype pattern (channels)
   (:fields
-   (value divisions         (sequence 64 :element-type (division channels) :stride (* 4 channels)))))
+   (value divisions         (sequence 64 :element-type (division channels) :stride (ash (* 4 channels) 3)))))
 
 (defconstant +pattern-table-size+ 128)
 (defconstant +sample-table-size+ 31)
@@ -54,13 +54,14 @@
    (value patterns          (sequence (1+ (iter (for i below +pattern-table-size+)
                                                 (maximize (path-value *self* 'pattern-table i))))
                                       :element-type (pattern (path-value *self* 'channel-count))
-                                      :stride (* 64 4 (path-value *self* 'channel-count))))
+                                      :stride (ash (* 64 4 (path-value *self* 'channel-count)) 3)))
    (value sample-data       (sequence +sample-table-size+ :element-type (current-offset 32)
                                                           :stride-fn (lambda (i)
-                                                                       (* 2 (path-value *self* 'samples i 'length))))
-                            :out-of-stream-offset (- *total-length*
-                                                     (* 2 (iter (for i below +sample-table-size+) 
-                                                                (sum (path-value *self* 'samples i 'length))))))))
+                                                                       (ash (* 2 (path-value *self* 'samples i 'length)) 3)))
+                            :out-of-stream-offset (ash (- (length *sequence*)
+                                                          (* 2 (iter (for i below +sample-table-size+) 
+                                                                     (sum (path-value *self* 'samples i 'length)))))
+                                                       3))))
 
 ;; (let ((test-file-name "/mnt/core/audio/modules_orig/starcon2/pkunk.mod"))
 ;;   (format t "testing ~S:~%~S~%"
