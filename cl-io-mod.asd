@@ -1,9 +1,4 @@
-;;; -*- Mode: Lisp -*-
-
-(defpackage :cl-io-mod.system
-  (:use :cl :asdf))
-
-(in-package :cl-io-mod.system)
+;;; -*- Mode: Lisp; indent-tabs-mode: nil -*-
 
 (defsystem :cl-io-mod
   :depends-on (:bintype :iterate)
